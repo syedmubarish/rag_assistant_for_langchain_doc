@@ -2,6 +2,7 @@ from src import data_extractor
 from src import document_structure
 from src import embedding
 from src import vector_store
+from src import chroma_retriever
 
 if __name__ == "__main__":
     url = "https://docs.langchain.com/llms.txt"
@@ -17,5 +18,9 @@ if __name__ == "__main__":
     chroma_store = vector_store.ChromaVectorStore()
 
     # chroma_store.add_topics(topics,topic_embeddings,document_structures) --> Uncomment this if topics are not added to collection
+
+    chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store,emb_pipe)
+
+    retrived_docs = chroma_retriever.topic_retrieve("App development in LangSmith Deployment")
 
     
