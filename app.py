@@ -24,5 +24,8 @@ if __name__ == "__main__":
 
     retrived_docs = chroma_retriever.topic_retrieve("App development in LangSmith Deployment")
 
-    doc_content = document_extractor.extract_contents('https://docs.langchain.com/langsmith/collector-proxy.md')
-    print(doc_content)
+    doc_content = document_extractor.extract_contents(retrived_docs)
+    
+    
+    
+    
