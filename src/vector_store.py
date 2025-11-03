@@ -46,3 +46,36 @@ class ChromaVectorStore:
 
         except Exception as e:
             print(f"[ERROR]Error initializing vector store: {e}")
+
+
+    def add_topics(self,topics: List[Any], topic_embeddings: np.ndarray, document_structures: List[Any]):
+        if len(topics) != len(topic_embeddings):
+            raise ValueError("Number of topics and embeddings must match")
+        
+        print(f"[INFO] Adding {len(topic_embeddings)} to vector store....")
+
+        ids = []
+        metadatas = []
+        topic_list = []
+        embeddings_list = []
+
+        for document_structure in document_structures:
+            ids.append(document_structure.id)
+            metadatas.append(document_structure.metadata)
+            topic_list = topics
+            embeddings_list = topic_embeddings.tolist()
+
+        try:
+            self.topic_collection.add(
+                ids=ids,
+                metadatas=metadatas,
+                documents=topic_list,
+                embeddings=embeddings_list
+            )
+
+            print(f"[INFO]Successfully added {len(topics)} documents to vector store")
+            print(f"[INFO]Total documents in collection: {self.topic_collection.count()}")
+        except Exception as e:
+            print(f"[ERROR] Adding documents to chromadb : {e}")
+            raise
+    

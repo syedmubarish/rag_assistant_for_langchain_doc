@@ -15,3 +15,7 @@ if __name__ == "__main__":
     
 
     chroma_store = vector_store.ChromaVectorStore()
+
+    # chroma_store.add_topics(topics,topic_embeddings,document_structures) --> Uncomment this if topics are not added to collection
+
+    
