@@ -44,6 +44,7 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
         Sources:{sources}
 
         Now answer the question in detail, including relevant URLs in your answer.
+        Elaborate the answer based on context
         Refer the url if needed
     """
 

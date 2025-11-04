@@ -81,30 +81,58 @@ class ChromaVectorStore:
             raise
     
 
-    def add_documents(self,documents:List[Any],document_embeddings:np.ndarray):
+    def add_documents(self, documents: List[Any], document_embeddings: np.ndarray):
         if len(documents) != len(document_embeddings):
-            raise ValueError("Number of topics and embeddings must match")
+            raise ValueError("Number of documents and embeddings must match")
+    
+        print(f"[INFO] Attempting to add {len(document_embeddings)} documents to vector store...")
+
+    
+        try:
+            existing = self.content_collection.get(include=["metadatas"])
+            existing_meta = existing.get("metadatas", [])
+        except Exception as e:
+            print(f"[WARN] Could not retrieve existing documents from DB: {e}")
+            existing_meta = []
+
+    
+        existing_pairs = {
+            (meta.get("source_url"), meta.get("doc_index"))
+            for meta in existing_meta if meta
+        }
+
+        print(f"[INFO] Found {len(existing_pairs)} existing entries in DB")
+
+    
+        new_docs = []
+        new_embeddings = []
+        for doc, embedding in zip(documents, document_embeddings):
+            pair = (doc.get("source_url"), doc.get("chunk_index"))
+            if pair in existing_pairs:
+                print(f"[SKIP] Duplicate found for {pair}, skipping...")
+                continue
+            new_docs.append(doc)
+            new_embeddings.append(embedding)
+
         
-        print(f"[INFO] Adding {len(document_embeddings)} to vector store....")
-        ids = []
-        metadatas = []
-        documents_list = []
-        embeddings_list = []
+        if not new_docs:
+            print("[INFO] No new documents to add. All are already in DB.")
+            return
 
-        for i, (doc,embedding) in enumerate(zip(documents, document_embeddings)):
-            doc_id = f"{uuid.uuid4().hex[:7]}_{i}"
-            ids.append(doc_id)
+    
+        ids = [f"{uuid.uuid4().hex[:7]}_{i}" for i in range(len(new_docs))]
+        metadatas = [
+            {
+                "source_url": doc["source_url"],
+                "doc_index": doc["chunk_index"],
+                "content_length": len(doc["text"]),
+            }
+            for doc in new_docs
+        ]
+        documents_list = [doc["text"] for doc in new_docs]
+        embeddings_list = [embedding.tolist() for embedding in new_embeddings]
 
-            metadata = {}
-            metadata['source_url']=doc['source_url']
-            metadata['doc_index']=doc['chunk_index']
-            metadata['content_length']=len(doc['text'])
-            metadatas.append(metadata)
-
-            documents_list.append(doc['text'])
-
-            embeddings_list.append(embedding.tolist())
-
+        
         try:
             self.content_collection.add(
                 ids=ids,
@@ -112,19 +140,19 @@ class ChromaVectorStore:
                 documents=documents_list,
                 embeddings=embeddings_list
             )
-
-            print(f"[INFO]Successfully added {len(documents_list)} documents to vector store")
-            print(f"[INFO]Total documents in collection: {self.content_collection.count()}")
+            print(f"[INFO] Successfully added {len(new_docs)} new documents to vector store")
+            print(f"[INFO] Total documents in collection: {self.content_collection.count()}")
         except Exception as e:
-            print(f"[ERROR] Adding documents to chromadb : {e}")
+            print(f"[ERROR] Adding documents to ChromaDB: {e}")
             raise
+
 
     def peeking(self):
         print(self.content_collection.peek())
 
     def empty_collection(self):
-    # Get all document IDs in the collection
+    
         all_ids = self.content_collection.get()["ids"]
     
-        if all_ids:  # only delete if there are documents
+        if all_ids:  
             self.content_collection.delete(ids=all_ids)

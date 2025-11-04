@@ -7,7 +7,7 @@ from src import document_extractor
 from src import search
 
 if __name__ == "__main__":
-    query = "How to set up hybrid LangSmith"
+    query = "How do I deploy LangChain to Cloud?"
     
     url = "https://docs.langchain.com/llms.txt"
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     chroma_store = vector_store.ChromaVectorStore()
 
     # chroma_store.add_topics(topics,topic_embeddings,document_structures) --> Uncomment this if topics are not added to collection
-    chroma_store.empty_collection()
+    # chroma_store.empty_collection()
 
     chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store,emb_pipe)
 
@@ -34,10 +34,7 @@ if __name__ == "__main__":
 
     chunked_content_list = document_extractor.chunking(doc_content,emb_pipe,chroma_store)
     
-    # for chunk in chunked_content_list:
-    #     print(chunk)
-    #     print(len(chunk))
-    #     print("==========================SYED MUBARISH THANGAL=========================")
+    
 
     flattened_chunks = document_extractor.flatten_chunks_with_metadata(chunked_content_list,retrived_docs)
 
