@@ -121,3 +121,10 @@ class ChromaVectorStore:
 
     def peeking(self):
         print(self.content_collection.peek())
+
+    def empty_collection(self):
+    # Get all document IDs in the collection
+        all_ids = self.content_collection.get()["ids"]
+    
+        if all_ids:  # only delete if there are documents
+            self.content_collection.delete(ids=all_ids)

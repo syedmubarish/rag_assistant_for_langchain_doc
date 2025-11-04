@@ -91,7 +91,7 @@ class ChromaRetriever:
                         retrieved_docs.append(
                             {
                                 "doc_id": doc_id,
-                                "topic": document,
+                                "content": document,
                                 "url": metadata.get("source_url"),
                                 "similarity_score": similarity_score,
                                 "distance": distance,
