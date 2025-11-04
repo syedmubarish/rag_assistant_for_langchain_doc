@@ -33,7 +33,8 @@ class EmbeddingPipeline:
         return chunks
 
     def embed_chunks(self, chunks: List[Any]) -> np.ndarray:
-        texts = [chunk.page_content for chunk in chunks]
+        
+        texts = [chunk['text'] for chunk in chunks]
         print(f"[INFO] Generate embeddings for {len(chunks)} chunks....")
         embeddings = self.model.encode(texts,show_progress_bar=True)
         print(f"Embeddings shape:{embeddings.shape}")

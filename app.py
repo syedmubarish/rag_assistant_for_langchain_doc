@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     flattened_chunks = document_extractor.flatten_chunks_with_metadata(chunked_content_list,retrived_docs)
 
-    print(len(flattened_chunks))
+    chunks_embedded = emb_pipe.embed_chunks(flattened_chunks)
 
     
     
