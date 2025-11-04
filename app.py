@@ -37,6 +37,10 @@ if __name__ == "__main__":
 
     chunks_embedded = emb_pipe.embed_chunks(flattened_chunks)
 
+    # chroma_store.add_documents(flattened_chunks,chunks_embedded)
+
+    chroma_store.peeking()
+
     
     
     

@@ -4,6 +4,7 @@ import numpy as np
 from typing import Any, List
 from src.embedding import EmbeddingPipeline
 from sentence_transformers import SentenceTransformer
+import uuid
 
 
 class ChromaVectorStore:
@@ -79,3 +80,44 @@ class ChromaVectorStore:
             print(f"[ERROR] Adding documents to chromadb : {e}")
             raise
     
+
+    def add_documents(self,documents:List[Any],document_embeddings:np.ndarray):
+        if len(documents) != len(document_embeddings):
+            raise ValueError("Number of topics and embeddings must match")
+        
+        print(f"[INFO] Adding {len(document_embeddings)} to vector store....")
+        ids = []
+        metadatas = []
+        documents_list = []
+        embeddings_list = []
+
+        for i, (doc,embedding) in enumerate(zip(documents, document_embeddings)):
+            doc_id = f"{uuid.uuid4().hex[:7]}_{i}"
+            ids.append(doc_id)
+
+            metadata = {}
+            metadata['source_url']=doc['source_url']
+            metadata['doc_index']=doc['chunk_index']
+            metadata['content_length']=len(doc['text'])
+            metadatas.append(metadata)
+
+            documents_list.append(doc['text'])
+
+            embeddings_list.append(embedding.tolist())
+
+        try:
+            self.content_collection.add(
+                ids=ids,
+                metadatas=metadatas,
+                documents=documents_list,
+                embeddings=embeddings_list
+            )
+
+            print(f"[INFO]Successfully added {len(documents_list)} documents to vector store")
+            print(f"[INFO]Total documents in collection: {self.content_collection.count()}")
+        except Exception as e:
+            print(f"[ERROR] Adding documents to chromadb : {e}")
+            raise
+
+    def peeking(self):
+        print(self.content_collection.peek())
