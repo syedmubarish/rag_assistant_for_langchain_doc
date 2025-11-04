@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store,emb_pipe)
 
-    retrived_docs = chroma_retriever.topic_retrieve("How to review, edit, and approve tool calls in an agent or workflow")
+    retrived_docs = chroma_retriever.topic_retrieve("Configure webhook notifications for LangSmith alerts")
 
     doc_content = document_extractor.extract_contents(retrived_docs)
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     chroma_store.add_documents(flattened_chunks,chunks_embedded)
 
-    retrived_contexts = chroma_retriever.context_retrieve("How to review, edit, and approve tool calls in an agent or workflow, use LangGraph's [human-in-the-loop](/oss/python/langgraph/interrupts) features.")
+    retrived_contexts = chroma_retriever.context_retrieve("Configure webhook notifications for LangSmith alerts")
 
     print(retrived_contexts)
     

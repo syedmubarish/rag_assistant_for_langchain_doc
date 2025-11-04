@@ -92,7 +92,7 @@ class ChromaRetriever:
                             {
                                 "doc_id": doc_id,
                                 "topic": document,
-                                "url": metadata.get("url"),
+                                "url": metadata.get("source_url"),
                                 "similarity_score": similarity_score,
                                 "distance": distance,
                                 "rank": i + 1,
