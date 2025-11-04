@@ -25,6 +25,18 @@ if __name__ == "__main__":
     retrived_docs = chroma_retriever.topic_retrieve("App development in LangSmith Deployment")
 
     doc_content = document_extractor.extract_contents(retrived_docs)
+
+    chunked_content_list = document_extractor.chunking(doc_content,emb_pipe,chroma_store)
+    
+    # for chunk in chunked_content_list:
+    #     print(chunk)
+    #     print(len(chunk))
+    #     print("==========================SYED MUBARISH THANGAL=========================")
+
+    flattened_chunks = document_extractor.flatten_chunks_with_metadata(chunked_content_list,retrived_docs)
+
+    print(len(flattened_chunks))
+
     
     
     
