@@ -7,7 +7,7 @@ from src import document_extractor
 from src import search
 
 if __name__ == "__main__":
-    query = "How do I deploy LangChain to Cloud?"
+    query = "How to improve LLM-as-judge evaluators using human feedback?"
     
     url = "https://docs.langchain.com/llms.txt"
 
