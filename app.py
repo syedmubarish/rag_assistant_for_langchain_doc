@@ -7,18 +7,18 @@ from src import document_extractor
 from src import search
 
 if __name__ == "__main__":
-    query = "How to improve LLM-as-judge evaluators using human feedback?"
+    query = "How to Set up automation rules"
     
     url = "https://docs.langchain.com/llms.txt"
 
 
-    topics, urls = data_extractor.extract_topics_urls(url)
+    # topics, urls = data_extractor.extract_topics_urls(url)
 
-    document_structures = document_structure.create_document_structures(topics, urls)
+    # document_structures = document_structure.create_document_structures(topics, urls)
 
     emb_pipe = embedding.EmbeddingPipeline()
 
-    topic_embeddings = emb_pipe.embed_topic(topics)
+    # topic_embeddings = emb_pipe.embed_topic(topics)
     
 
     chroma_store = vector_store.ChromaVectorStore()
@@ -47,6 +47,8 @@ if __name__ == "__main__":
 
     output = search.do_rag(query,chroma_retriever,search.llm)
     print(output)
+
+    search.chat_loop(chroma_retriever)
     
     
     

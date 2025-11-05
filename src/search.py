@@ -56,3 +56,25 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
     }
 
     return output
+
+def chat_loop(retriever):
+    print("💬 Chat started! Type 'exit' to quit.\n")
+    history = []
+
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ["exit", "quit"]:
+            print("👋 Goodbye!")
+            break
+
+        
+        chat_context = "\n".join([f"User: {u}\nAssistant: {a}" for u, a in history])
+        query_with_context = f"{chat_context}\nUser: {user_input}"
+
+        result = do_rag(query_with_context, retriever, llm)
+        answer = result["answer"]
+
+       
+        print(f"Assistant: {answer}\n")
+
+        history.append((user_input, answer))
