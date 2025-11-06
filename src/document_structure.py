@@ -15,7 +15,5 @@ def create_document_structures(topics: List[Any], urls: List[Any]) -> List[Any]:
         )
         document_structures.append(doc)
 
-    print(
-        f"[INFO] Created document stuctures containing {len(document_structures)} documents"
-    )
+    
     return document_structures

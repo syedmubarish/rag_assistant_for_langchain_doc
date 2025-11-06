@@ -13,7 +13,7 @@ def extract_contents(retrieved_docs: List[Any]):
 
     try:
         for doc in retrieved_docs:
-            print(f"[INFO] Extracting texts from {doc['topic']}")
+            
             texts = requests.get(doc["url"]).text
             content_list.append(texts)
 
@@ -32,7 +32,7 @@ def chunking(
     """
     chunked_content_list = []
     try:
-        print(f"[INFO]Start chunking...chunk..chunk")
+        
         for content in content_list:
             chunked_content = embedding_pipeline.chunk_text(content)
             chunked_content_list.append(chunked_content)

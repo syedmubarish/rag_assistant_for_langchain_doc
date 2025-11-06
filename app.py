@@ -17,15 +17,17 @@ if __name__ == "__main__":
 
     emb_pipe = embedding.EmbeddingPipeline()
 
-    # topic_embeddings = emb_pipe.embed_topic(topics)
 
     chroma_store = vector_store.ChromaVectorStore()
 
-    # chroma_store.add_topics(topics,topic_embeddings,document_structures) --> Uncomment this if topics are not added to collection
 
     chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store, emb_pipe)
 
     """
+    topic_embeddings = emb_pipe.embed_topic(topics)
+    
+    chroma_store.add_topics(topics,topic_embeddings,document_structures) 
+
     for i in topics:
         query = i
         retrived_docs = chroma_retriever.topic_retrieve(query)
@@ -41,6 +43,7 @@ if __name__ == "__main__":
         chunks_embedded = emb_pipe.embed_chunks(flattened_chunks)
 
         chroma_store.add_documents(flattened_chunks,chunks_embedded)
+    
     """
 
     output = search.do_rag(query, chroma_retriever, search.llm)

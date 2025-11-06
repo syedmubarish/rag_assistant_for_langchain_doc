@@ -15,8 +15,7 @@ class ChromaRetriever:
         self, query: str, top_k: int = 5, score_threshold: float = 0.0
     ) -> List[Dict[str, Any]]:
 
-        print(f"[INFO]Retrieving topics for query: '{query}'")
-        print(f"[INFO]Top K: {top_k}, Score threshold: {score_threshold}")
+        
 
         query_embedding = self.embedding_pipeline.embed_query(query)
 
@@ -48,9 +47,7 @@ class ChromaRetriever:
                                 "rank": i + 1,
                             }
                         )
-                print(
-                    f"[INFO]Retrieved {len(retrieved_docs)} documents after filtering"
-                )
+                
             else:
                 print(f"[INFO] No documents found")
 
@@ -64,8 +61,7 @@ class ChromaRetriever:
         self, query: str, top_k: int = 10, score_threshold: float = 0.0
     ) -> List[Dict[str, Any]]:
 
-        print(f"[INFO]Retrieving context for query: '{query}'")
-        print(f"[INFO]Top K: {top_k}, Score threshold: {score_threshold}")
+        
 
         query_embedding = self.embedding_pipeline.embed_query(query)
 
@@ -97,9 +93,7 @@ class ChromaRetriever:
                                 "rank": i + 1,
                             }
                         )
-                print(
-                    f"[INFO]Retrieved {len(retrieved_docs)} documents after filtering"
-                )
+                
             else:
                 print(f"[INFO] No documents found")
 

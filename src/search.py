@@ -22,7 +22,7 @@ def do_rag(query, retriever, llm=llm, top_k=25, min_score=0.0):
     sources = [{"source": doc.get("url", "unknown")} for doc in results]
 
     prompt = f""" 
-        Use the following context to answer the question
+        Use the following context to answer the question concisely
 
 
         You are a helpful assistant that answers questions based only on the provided LangChain documentation.
@@ -36,7 +36,7 @@ def do_rag(query, retriever, llm=llm, top_k=25, min_score=0.0):
         
         Sources:{sources}
 
-        Now answer the question in detail, including relevant URLs in your answer.
+        Now answer the question in short, including relevant URLs in your answer.
         Elaborate the answer based on context
         
     """

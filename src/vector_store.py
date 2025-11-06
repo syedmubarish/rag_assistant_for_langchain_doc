@@ -36,7 +36,7 @@ class ChromaVectorStore:
                 metadata={"description": "Langchain content embeddings for RAG"},
             )
             print(
-                f"[INFO] Vector store initialised. Topic Collection:{self.topic_collection_name}, Content Collection:{self.content_collection_name}"
+                f"[INFO] Vector store initialised."
             )
             print(
                 f"[INFO] Existing topics in collection:{self.topic_collection.count()}"
@@ -57,7 +57,7 @@ class ChromaVectorStore:
         if len(topics) != len(topic_embeddings):
             raise ValueError("Number of topics and embeddings must match")
 
-        print(f"[INFO] Adding {len(topic_embeddings)} to vector store....")
+        
 
         ids = []
         metadatas = []
@@ -90,9 +90,7 @@ class ChromaVectorStore:
         if len(documents) != len(document_embeddings):
             raise ValueError("Number of documents and embeddings must match")
 
-        print(
-            f"[INFO] Attempting to add {len(document_embeddings)} documents to vector store..."
-        )
+        
 
         try:
             existing = self.content_collection.get(include=["metadatas"])
@@ -107,20 +105,20 @@ class ChromaVectorStore:
             if meta
         }
 
-        print(f"[INFO] Found {len(existing_pairs)} existing entries in DB")
+        
 
         new_docs = []
         new_embeddings = []
         for doc, embedding in zip(documents, document_embeddings):
             pair = (doc.get("source_url"), doc.get("chunk_index"))
             if pair in existing_pairs:
-                print(f"[SKIP] Duplicate found for {pair}, skipping...")
+                
                 continue
             new_docs.append(doc)
             new_embeddings.append(embedding)
 
         if not new_docs:
-            print("[INFO] No new documents to add. All are already in DB.")
+            
             return
 
         ids = [f"{uuid.uuid4().hex[:7]}_{i}" for i in range(len(new_docs))]
