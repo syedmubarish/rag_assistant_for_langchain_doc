@@ -25,7 +25,7 @@ if __name__ == "__main__":
     chroma_store = vector_store.ChromaVectorStore()
 
     # chroma_store.add_topics(topics,topic_embeddings,document_structures) --> Uncomment this if topics are not added to collection
-    # chroma_store.empty_collection()
+    
 
     chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store,emb_pipe)
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         chroma_store.add_documents(flattened_chunks,chunks_embedded)
     """
 
-    # retrived_contexts = chroma_retriever.context_retrieve("Set up hybrid LangSmith")
+    
 
 
     output = search.do_rag(query,chroma_retriever,search.llm)
