@@ -53,7 +53,7 @@ if __name__ == "__main__":
     output = search.do_rag(query,chroma_retriever,search.llm)
     
 
-    search.chat_loop(chroma_retriever)
+    search.chat_loop(chroma_retriever,search.llm)
     
     
     

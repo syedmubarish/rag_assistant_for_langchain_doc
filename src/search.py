@@ -10,7 +10,7 @@ llm = ChatGoogleGenerativeAI(
 )
 
 
-def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
+def do_rag(query,retriever,llm=llm,top_k=25,min_score=0.0):
     
     results = retriever.context_retrieve(query,top_k=top_k,score_threshold=min_score)
     
@@ -57,21 +57,23 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
 
     return output
 
-def chat_loop(retriever):
-    print("💬 Hi, How can i help you?. If you want to abort type 'exit' or 'quit' to quit.\n")
-    
+def chat_loop(retriever, llm):
+    print("💬 Hi! How can I help you? Type 'exit' or 'quit' to stop.\n")
 
     while True:
-        user_input = input("You: ")
+        user_input = input("You: ").strip()
         if user_input.lower() in ["exit", "quit"]:
-            print("Bye...Byee")
+            print("Bye...Byee 👋")
             break
 
-        
-        result = do_rag(user_input, retriever, llm)
-        answer = result["answer"]
+        try:
+            result = do_rag(user_input, retriever, llm)
+            answer = result.get("answer", "Sorry, I couldn't find an answer.")
+        except Exception as e:
+            answer = f"Error: {e}"
 
         print(f"Assistant: {answer}\n")
+
 
         
         
