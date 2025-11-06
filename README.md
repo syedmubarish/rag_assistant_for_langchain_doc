@@ -34,10 +34,11 @@ Think of it as your personal LangChain tutor in the terminal.
    cd rag_assistant_for_langchain_doc
 
 2. **Create virtual environment**
+    ```
     python -m venv venv
     source venv/bin/activate   # macOS/Linux
     venv\Scripts\activate      # Windows
-
+    ```
 3. **Install dependencies**
     pip install -r requirements.txt
 
@@ -58,7 +59,7 @@ Think of it as your personal LangChain tutor in the terminal.
 6. **Run the assistant**
     ```python app.py```
 
-    
+
 ## ⚖️ Disclaimer
 This tool is intended for educational and informational purposes only.
 
