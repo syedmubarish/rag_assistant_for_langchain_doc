@@ -15,7 +15,7 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
     results = retriever.context_retrieve(query,top_k=top_k,score_threshold=min_score)
     
     if not results:
-        return {'answer':'No relevant context found','sources':[],'confidence':0.0}
+        return {'answer':'No relevant context found','sources':[]}
     
 
     context = "\n\n".join([doc['content'] for doc in results])
@@ -59,7 +59,7 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
 
 def chat_loop(retriever):
     print("💬 Chat started! Type 'exit' to quit.\n")
-    history = []
+    
 
     while True:
         user_input = input("You: ")
@@ -68,13 +68,10 @@ def chat_loop(retriever):
             break
 
         
-        chat_context = "\n".join([f"User: {u}\nAssistant: {a}" for u, a in history])
-        query_with_context = f"{chat_context}\nUser: {user_input}"
-
-        result = do_rag(query_with_context, retriever, llm)
+        result = do_rag(user_input, retriever, llm)
         answer = result["answer"]
 
-       
         print(f"Assistant: {answer}\n")
 
-        history.append((user_input, answer))
+        
+        
