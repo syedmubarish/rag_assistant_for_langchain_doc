@@ -48,11 +48,15 @@ class ChromaVectorStore:
         except Exception as e:
             print(f"[ERROR]Error initializing vector store: {e}")
 
-
-    def add_topics(self,topics: List[Any], topic_embeddings: np.ndarray, document_structures: List[Any]):
+    def add_topics(
+        self,
+        topics: List[Any],
+        topic_embeddings: np.ndarray,
+        document_structures: List[Any],
+    ):
         if len(topics) != len(topic_embeddings):
             raise ValueError("Number of topics and embeddings must match")
-        
+
         print(f"[INFO] Adding {len(topic_embeddings)} to vector store....")
 
         ids = []
@@ -71,23 +75,25 @@ class ChromaVectorStore:
                 ids=ids,
                 metadatas=metadatas,
                 documents=topic_list,
-                embeddings=embeddings_list
+                embeddings=embeddings_list,
             )
 
             print(f"[INFO]Successfully added {len(topics)} documents to vector store")
-            print(f"[INFO]Total documents in collection: {self.topic_collection.count()}")
+            print(
+                f"[INFO]Total documents in collection: {self.topic_collection.count()}"
+            )
         except Exception as e:
             print(f"[ERROR] Adding documents to chromadb : {e}")
             raise
-    
 
     def add_documents(self, documents: List[Any], document_embeddings: np.ndarray):
         if len(documents) != len(document_embeddings):
             raise ValueError("Number of documents and embeddings must match")
-    
-        print(f"[INFO] Attempting to add {len(document_embeddings)} documents to vector store...")
 
-    
+        print(
+            f"[INFO] Attempting to add {len(document_embeddings)} documents to vector store..."
+        )
+
         try:
             existing = self.content_collection.get(include=["metadatas"])
             existing_meta = existing.get("metadatas", [])
@@ -95,15 +101,14 @@ class ChromaVectorStore:
             print(f"[WARN] Could not retrieve existing documents from DB: {e}")
             existing_meta = []
 
-    
         existing_pairs = {
             (meta.get("source_url"), meta.get("doc_index"))
-            for meta in existing_meta if meta
+            for meta in existing_meta
+            if meta
         }
 
         print(f"[INFO] Found {len(existing_pairs)} existing entries in DB")
 
-    
         new_docs = []
         new_embeddings = []
         for doc, embedding in zip(documents, document_embeddings):
@@ -114,12 +119,10 @@ class ChromaVectorStore:
             new_docs.append(doc)
             new_embeddings.append(embedding)
 
-        
         if not new_docs:
             print("[INFO] No new documents to add. All are already in DB.")
             return
 
-    
         ids = [f"{uuid.uuid4().hex[:7]}_{i}" for i in range(len(new_docs))]
         metadatas = [
             {
@@ -132,27 +135,29 @@ class ChromaVectorStore:
         documents_list = [doc["text"] for doc in new_docs]
         embeddings_list = [embedding.tolist() for embedding in new_embeddings]
 
-        
         try:
             self.content_collection.add(
                 ids=ids,
                 metadatas=metadatas,
                 documents=documents_list,
-                embeddings=embeddings_list
+                embeddings=embeddings_list,
             )
-            print(f"[INFO] Successfully added {len(new_docs)} new documents to vector store")
-            print(f"[INFO] Total documents in collection: {self.content_collection.count()}")
+            print(
+                f"[INFO] Successfully added {len(new_docs)} new documents to vector store"
+            )
+            print(
+                f"[INFO] Total documents in collection: {self.content_collection.count()}"
+            )
         except Exception as e:
             print(f"[ERROR] Adding documents to ChromaDB: {e}")
             raise
-
 
     def peeking(self):
         print(self.content_collection.peek())
 
     def empty_collection(self):
-    
+
         all_ids = self.content_collection.get()["ids"]
-    
-        if all_ids:  
+
+        if all_ids:
             self.content_collection.delete(ids=all_ids)

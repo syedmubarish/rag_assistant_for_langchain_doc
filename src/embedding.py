@@ -1,7 +1,8 @@
-from typing import Any,List
+from typing import Any, List
 from sentence_transformers import SentenceTransformer
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import numpy as np
+
 
 class EmbeddingPipeline:
     def __init__(
@@ -16,9 +17,9 @@ class EmbeddingPipeline:
 
         print(f"[INFO] Loaded embedding model: {model_name}")
 
-    def embed_topic(self,topics: List[Any]) -> np.ndarray:
+    def embed_topic(self, topics: List[Any]) -> np.ndarray:
         print(f"[INFO] Generate embeddings for topics.. {len(topics)} topics")
-        topic_embeddings = self.model.encode(topics,show_progress_bar=True)
+        topic_embeddings = self.model.encode(topics, show_progress_bar=True)
         return topic_embeddings
 
     def chunk_text(self, text: str) -> List[Any]:
@@ -33,14 +34,14 @@ class EmbeddingPipeline:
         return chunks
 
     def embed_chunks(self, chunks: List[Any]) -> np.ndarray:
-        
-        texts = [chunk['text'] for chunk in chunks]
+
+        texts = [chunk["text"] for chunk in chunks]
         print(f"[INFO] Generate embeddings for {len(chunks)} chunks....")
-        embeddings = self.model.encode(texts,show_progress_bar=True)
+        embeddings = self.model.encode(texts, show_progress_bar=True)
         print(f"Embeddings shape:{embeddings.shape}")
         return embeddings
 
-    def embed_query(self,query:str) -> np.ndarray:
+    def embed_query(self, query: str) -> np.ndarray:
         print(f"[INFO]Generate embedding for query")
         query_embedding = self.model.encode(query)
         print(f"Embeddings shape:{query_embedding.shape}")

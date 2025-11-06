@@ -8,26 +8,22 @@ from src import search
 
 if __name__ == "__main__":
     query = ""
-    
-    url = "https://docs.langchain.com/llms.txt"
 
+    url = "https://docs.langchain.com/llms.txt"
 
     topics, urls = data_extractor.extract_topics_urls(url)
 
     document_structures = document_structure.create_document_structures(topics, urls)
-    
 
     emb_pipe = embedding.EmbeddingPipeline()
 
     # topic_embeddings = emb_pipe.embed_topic(topics)
-    
 
     chroma_store = vector_store.ChromaVectorStore()
 
     # chroma_store.add_topics(topics,topic_embeddings,document_structures) --> Uncomment this if topics are not added to collection
-    
 
-    chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store,emb_pipe)
+    chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store, emb_pipe)
 
     """
     for i in topics:
@@ -47,13 +43,6 @@ if __name__ == "__main__":
         chroma_store.add_documents(flattened_chunks,chunks_embedded)
     """
 
-    
+    output = search.do_rag(query, chroma_retriever, search.llm)
 
-
-    output = search.do_rag(query,chroma_retriever,search.llm)
-    
-
-    search.chat_loop(chroma_retriever,search.llm)
-    
-    
-    
+    search.chat_loop(chroma_retriever, search.llm)

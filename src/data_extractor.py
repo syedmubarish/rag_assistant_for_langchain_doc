@@ -18,8 +18,8 @@ def extract_topics_urls(url: str):
         topics = re.findall(r"\[([^\[\]]+)\]", text)
         urls = re.findall(r"https?://[^\s\]]+md", text)
 
-        return topics,urls
-    
+        return topics, urls
+
     except Exception as e:
         print(f"[ERROR] Error request failed: {e}")
-        return [],[]
+        return [], []

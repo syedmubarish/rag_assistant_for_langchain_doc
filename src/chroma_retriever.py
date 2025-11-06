@@ -59,7 +59,6 @@ class ChromaRetriever:
         except Exception as e:
             print(f"[ERROR]Error during retrievel: {e}")
             return []
-    
 
     def context_retrieve(
         self, query: str, top_k: int = 10, score_threshold: float = 0.0
