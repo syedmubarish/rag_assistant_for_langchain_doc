@@ -45,7 +45,7 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
 
         Now answer the question in detail, including relevant URLs in your answer.
         Elaborate the answer based on context
-        Refer the url if needed
+        
     """
 
     response = llm.invoke([prompt])
@@ -58,13 +58,13 @@ def do_rag(query,retriever,llm,top_k=25,min_score=0.0):
     return output
 
 def chat_loop(retriever):
-    print("💬 Chat started! Type 'exit' to quit.\n")
+    print("💬 Hi, How can i help you?. If you want to abort type 'exit' or 'quit' to quit.\n")
     
 
     while True:
         user_input = input("You: ")
         if user_input.lower() in ["exit", "quit"]:
-            print("👋 Goodbye!")
+            print("Bye...Byee")
             break
 
         

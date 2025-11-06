@@ -7,7 +7,7 @@ from src import document_extractor
 from src import search
 
 if __name__ == "__main__":
-    query = "How to set up a JavaScript application"
+    query = ""
     
     url = "https://docs.langchain.com/llms.txt"
 
@@ -29,25 +29,29 @@ if __name__ == "__main__":
 
     chroma_retriever = chroma_retriever.ChromaRetriever(chroma_store,emb_pipe)
 
-    retrived_docs = chroma_retriever.topic_retrieve(query)
+    """
+    for i in topics:
+        query = i
+        retrived_docs = chroma_retriever.topic_retrieve(query)
 
-    doc_content = document_extractor.extract_contents(retrived_docs)
+        doc_content = document_extractor.extract_contents(retrived_docs)
 
-    chunked_content_list = document_extractor.chunking(doc_content,emb_pipe,chroma_store)
+        chunked_content_list = document_extractor.chunking(doc_content,emb_pipe,chroma_store)
     
     
 
-    flattened_chunks = document_extractor.flatten_chunks_with_metadata(chunked_content_list,retrived_docs)
+        flattened_chunks = document_extractor.flatten_chunks_with_metadata(chunked_content_list,retrived_docs)
 
-    chunks_embedded = emb_pipe.embed_chunks(flattened_chunks)
+        chunks_embedded = emb_pipe.embed_chunks(flattened_chunks)
 
-    chroma_store.add_documents(flattened_chunks,chunks_embedded)
+        chroma_store.add_documents(flattened_chunks,chunks_embedded)
+    """
 
     # retrived_contexts = chroma_retriever.context_retrieve("Set up hybrid LangSmith")
 
 
     output = search.do_rag(query,chroma_retriever,search.llm)
-    print(output)
+    
 
     search.chat_loop(chroma_retriever)
     
